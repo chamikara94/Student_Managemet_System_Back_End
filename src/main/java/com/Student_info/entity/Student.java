@@ -1,11 +1,10 @@
 package com.Student_info.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
-
 
 @Entity
 @Table
@@ -15,14 +14,17 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="index_no")
-    private String index_no;
+    @Column(name="index_no",unique = true,nullable = false)
+    private String indexNo;
 
     @Column(name="first_name")
     private String first_Name;
 
     @Column(name="last_name")
     private String last_Name;
+
+    @Column(name="gender")
+    private String gender;
 
     @Column(name="date_of_birth")
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd")
@@ -31,20 +33,12 @@ public class Student {
     @Column(name="gpa")
     private float gpa;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getIndex_no() {
-        return index_no;
+        return indexNo;
     }
 
     public void setIndex_no(String index_no) {
-        this.index_no = index_no;
+        this.indexNo = index_no;
     }
 
     public String getFirst_Name() {
@@ -63,15 +57,23 @@ public class Student {
         this.last_Name = last_Name;
     }
 
-    public LocalDate getDateOfBirth() {
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public LocalDate getDateofbirth() {
         return dateofbirth;
     }
 
-    public void setDateOfBirth(LocalDate dateofbirth) {
+    public void setDateofbirth(LocalDate dateofbirth) {
         this.dateofbirth = dateofbirth;
     }
 
-
+    @JsonIgnore
     public String getFormattedDateOfBirth(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return dateofbirth !=null ? dateofbirth.format(formatter) : null;
@@ -88,22 +90,13 @@ public class Student {
     public Student() {
     }
 
-    public Student(Long id, String index_no, String first_Name, String last_Name, LocalDate dateOfBirth, float gpa) {
-        this.id = id;
-        this.index_no = index_no;
-        this.first_Name = first_Name;
-        this.last_Name = last_Name;
-        this.dateofbirth = dateOfBirth;
-        this.gpa = gpa;
-    }
-
     @Override
     public String toString() {
         return "Student{" +
-                "Id=" + id +
-                ", Index_no='" + index_no + '\'' +
+                ", Index_no='" + indexNo + '\'' +
                 ", First_Name='" + first_Name + '\'' +
                 ", Last_Name='" + last_Name + '\'' +
+                ", Gender='" + gender + '\'' +
                 ", Date_Of_Birth=" + getFormattedDateOfBirth() +
                 ", GPA=" + gpa +
                 '}';
